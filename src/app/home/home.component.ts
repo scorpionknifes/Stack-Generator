@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SpinnerComponent } from '../components/spinner/spinner.component';
 import { Stack, StacksService } from '../services/stacks.service';
@@ -13,8 +13,10 @@ export class HomeComponent implements OnInit {
   public stackTwo$!: Observable<Stack[]>
   public stackThree$!: Observable<Stack[]>
   public stackFour$!: Observable<Stack[]>
+  public stackName: string = ""
+  public stackNames: string[] = ["", "", "", ""];
 
-  @ViewChild(SpinnerComponent) private spinner!: SpinnerComponent
+  @ViewChildren(SpinnerComponent) private spinners!: QueryList<SpinnerComponent>
 
   constructor(private stackService: StacksService) { }
   ngOnInit(): void {
@@ -26,7 +28,16 @@ export class HomeComponent implements OnInit {
     this.stackService.init();
   }
 
-  spin(): void {
-    this.spinner.spin();
+  async spin(): Promise<void> {
+    for (const spinner of this.spinners.toArray()) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      spinner.spin();
+    }
+  }
+
+  insertResult(name: string, num: number): void {
+    this.stackNames[num] = name;
+
+    this.stackName = "Generated Stack: " + this.stackNames.map(s => s[0]).join("");
   }
 }

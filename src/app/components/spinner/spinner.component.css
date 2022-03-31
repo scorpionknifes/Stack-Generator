@@ -10,6 +10,13 @@
   margin: 1ch;
 }
 
+.result {
+  width: 100px;
+  height: 30px;
+  margin: auto;
+  text-align: center;
+}
+
 *,
 *::before,
 *::after {

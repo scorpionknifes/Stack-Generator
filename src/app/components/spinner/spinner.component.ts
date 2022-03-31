@@ -6,17 +6,16 @@ import { Stack } from 'src/app/services/stacks.service';
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.css'],
   encapsulation: ViewEncapsulation.None,
-  animations: [
-
-  ]
 })
 export class SpinnerComponent implements OnInit {
 
   @Input() stacks: Stack[] | null = [];
-  @Output() result = new EventEmitter<Stack>();
+  @Input() stackText: string = "?"
+  @Output() resultEvent = new EventEmitter<Stack>();
   @ViewChild("door") door!: ElementRef;
 
   private spinned: boolean = false;
+  private stack?: Stack;
 
   constructor() { }
 
@@ -33,8 +32,19 @@ export class SpinnerComponent implements OnInit {
 
 
   async spin(): Promise<void> {
-    this.init(false, 1, 2);
-    this.getBoxes().style.transform = "translateY(0)";
+    const duration = parseInt(this.getBoxes().style.transitionDuration);
+
+    if (!this.spinned) {
+      this.init(false, 1, 2);
+      await new Promise((resolve) => setTimeout(resolve, duration * 1000));
+      this.getBoxes().style.transform = "translateY(0)";
+      await new Promise((resolve) => setTimeout(resolve, duration * 2000));
+    } else {
+      this.init()
+    }
+
+    this.resultEvent.emit(this.stack);
+    this.stackText = this.stack?.name ?? "?"
   }
 
   init(firstInit = true, groups = 1, duration = 1): void {
@@ -46,7 +56,7 @@ export class SpinnerComponent implements OnInit {
 
     const boxesClone: HTMLElement = this.getBoxes().cloneNode(false);
 
-    const pool: Stack[] = [{ name: "❓", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Question_mark_%28black%29.svg/800px-Question_mark_%28black%29.svg.png", url: "" }];
+    const pool: Stack[] = [{ name: "?", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Question_mark_%28black%29.svg/800px-Question_mark_%28black%29.svg.png", url: "" }];
     if (!firstInit) {
       const arr = [];
       for (let n = 0; n < (groups > 0 ? groups : 1); n++) {
@@ -96,10 +106,7 @@ export class SpinnerComponent implements OnInit {
     boxesClone.style.transform = `translateY(-${this.door.nativeElement.clientHeight * (pool.length - 1)}px)`;
     this.door.nativeElement.replaceChild(boxesClone, this.getBoxes());
     console.log(this.getBoxes())
-    this.result.emit(pool[pool.length - 1]);
-
-    // boxesClone.dispatchEvent(new Event('transitionstart'));
-    // boxesClone.dispatchEvent(new Event('transitionend'));
+    this.stack = pool[pool.length - 1]
   }
 
   shuffle([...stack]: Stack[]): Stack[] {

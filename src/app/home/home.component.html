@@ -1,6 +1,24 @@
 <div>
   <h1>Generate Stack</h1>
-  <div *ngFor="let stack of stackOne$ | async">{{stack.name}}</div>
-  <app-spinner [stacks]="stackOne$ | async" ></app-spinner>
+  <!-- <div *ngFor="let stack of stackOne$ | async">{{ stack.name }}</div> -->
+  <div class="spinners">
+    <app-spinner
+      [stacks]="stackOne$ | async"
+      (resultEvent)="insertResult($event.name, 0)"
+    ></app-spinner>
+    <app-spinner
+      [stacks]="stackTwo$ | async"
+      (resultEvent)="insertResult($event.name, 1)"
+    ></app-spinner>
+    <app-spinner
+      [stacks]="stackThree$ | async"
+      (resultEvent)="insertResult($event.name, 2)"
+    ></app-spinner>
+    <app-spinner
+      [stacks]="stackFour$ | async"
+      (resultEvent)="insertResult($event.name, 3)"
+    ></app-spinner>
+  </div>
   <button (click)="spin()">Spin</button>
+  <h2 [innerText]="stackName"></h2>
 </div>
