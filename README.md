@@ -1,5 +1,11 @@
 # StackGenerator
 
+Who doesn't like a random stack generator that help you generate your next group project.
+
+This project is designed to teach basics of angular and be taught in a 750 lecture as a joke on April first.
+
+Running version on GitHub Pages: https://zhenk.dev/stack-generator/
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.0.
 
 ## Development server
