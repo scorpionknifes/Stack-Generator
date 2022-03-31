@@ -1,0 +1,6 @@
+<div>
+  <h1>Generate Stack</h1>
+  <div *ngFor="let stack of stackOne$ | async">{{stack.name}}</div>
+  <app-spinner [stacks]="stackOne$ | async" ></app-spinner>
+  <button (click)="spin()">Spin</button>
+</div>

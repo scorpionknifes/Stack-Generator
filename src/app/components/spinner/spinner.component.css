@@ -1,0 +1,32 @@
+.door {
+  background: #fafafa;
+  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.4) inset;
+
+  width: 100px;
+  height: 150px;
+  overflow: hidden;
+
+  border-radius: 1ex;
+  margin: 1ch;
+}
+
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+.boxes {
+  /* transform: translateY(0); */
+  transition: transform 1s ease-in-out;
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 3rem;
+}
