@@ -11,6 +11,7 @@ export class SpinnerComponent implements OnInit {
 
   @Input() stacks: Stack[] | null = [];
   @Input() stackText: string = "?"
+  @Input() randomNum: () => number = Math.random;
   @Output() resultEvent = new EventEmitter<Stack>();
   @ViewChild("door") door!: ElementRef;
 
@@ -67,7 +68,6 @@ export class SpinnerComponent implements OnInit {
       boxesClone.addEventListener(
         "transitionstart",
         () => {
-          console.log("transitionstart");
           this.spinned = true
           this.getBoxes().querySelectorAll(".box").forEach((box: HTMLElement) => {
             box.style.filter = "blur(1px)";
@@ -79,10 +79,8 @@ export class SpinnerComponent implements OnInit {
       boxesClone.addEventListener(
         "transitionend",
         () => {
-          console.log("transitionend");
           this.getBoxes().querySelectorAll(".box").forEach((box: HTMLElement, index: number) => {
             box.style.filter = "blur(0)";
-            console.log(this.getBoxes())
             if (index > 0) this.getBoxes().removeChild(box);
           });
         },
@@ -91,7 +89,6 @@ export class SpinnerComponent implements OnInit {
     }
 
     for (let i = pool.length - 1; i >= 0; i--) {
-      console.log(i)
       const box = document.createElement("div");
       box.classList.add("box");
       box.style.width = this.door.nativeElement.clientWidth + "px";
@@ -105,14 +102,13 @@ export class SpinnerComponent implements OnInit {
     boxesClone.style.transitionDuration = `${duration > 0 ? duration : 1}s`;
     boxesClone.style.transform = `translateY(-${this.door.nativeElement.clientHeight * (pool.length - 1)}px)`;
     this.door.nativeElement.replaceChild(boxesClone, this.getBoxes());
-    console.log(this.getBoxes())
     this.stack = pool[pool.length - 1]
   }
 
   shuffle([...stack]: Stack[]): Stack[] {
     let m = stack.length
     while (m) {
-      const i = Math.floor(Math.random() * m--);
+      const i = Math.floor(this.randomNum() * m--);
       [stack[m], stack[i]] = [stack[i], stack[m]];
     }
     return stack;

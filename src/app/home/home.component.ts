@@ -15,6 +15,8 @@ export class HomeComponent implements OnInit {
   public stackFour$!: Observable<Stack[]>
   public stackName: string = ""
   public stackNames: string[] = ["", "", "", ""];
+  public randomNum: number = 0
+  public getRandomNum = () => this.randomNum;
 
   @ViewChildren(SpinnerComponent) private spinners!: QueryList<SpinnerComponent>
 
@@ -29,6 +31,7 @@ export class HomeComponent implements OnInit {
   }
 
   async spin(): Promise<void> {
+    this.randomNum = Math.random()
     for (const spinner of this.spinners.toArray()) {
       await new Promise((resolve) => setTimeout(resolve, 100));
       spinner.spin();

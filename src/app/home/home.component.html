@@ -9,6 +9,7 @@
     <app-spinner
       [stacks]="stackTwo$ | async"
       (resultEvent)="insertResult($event.name, 1)"
+      [randomNum]="getRandomNum"
     ></app-spinner>
     <app-spinner
       [stacks]="stackThree$ | async"
@@ -17,6 +18,7 @@
     <app-spinner
       [stacks]="stackFour$ | async"
       (resultEvent)="insertResult($event.name, 3)"
+      [randomNum]="getRandomNum"
     ></app-spinner>
   </div>
   <button (click)="spin()">Spin</button>
